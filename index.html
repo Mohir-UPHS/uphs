@@ -1,9 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
- 
+  <base target="_top">
+  <style>
+    h1 {
+      color: black;
+      background-color: #3278b2;
+      font-size: 90px;
+    }
+    label {
+      font-size: 35px;
+    }
+    input {
+      font-size: 30px;
+    }
+    #currentTime {
+      position: fixed;
+      bottom: 2%;
+      left: 2%;
+      font-size: 50px;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
 
-<P> Hi Mohir </P>
- 
+    @media (max-width: 768px) {
+      #currentTime {
+        font-size: 30px;
+        bottom: 4%;
+        left: 4%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #currentTime {
+        font-size: 20px;
+        bottom: 5%;
+        left: 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <center><h1>Arts & Wellness Scan Out Tracker</h1></center>
+  <b><label>Enter Your ID:</label></b>
+  <input type="text" id="idInput" size="20">
+  
+  <div id="currentTime"></div>
+
+  <script>
+    function updateCurrentTime() {
+      const now = new Date();
+      const dayName = now.toLocaleDateString(undefined, { weekday: 'long' });
+      const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      
+      document.getElementById('currentTime').textContent = `${dayName} - ${formattedTime}`;
+    }
+
+    // Initialize the current time with setInterval to update once per second
+    setInterval(updateCurrentTime, 1000);
+  </script>
 </body>
 </html>
