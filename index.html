@@ -44,11 +44,17 @@
 <body>
   <center><h1>Arts & Wellness Scan Out Tracker</h1></center>
   <b><label>Enter Your ID:</label></b>
-  <input type="text" id="idInput" size="20">
+  <input type="text" id="idInput" size="20" onkeydown="clearOnEnter(event)">
   
   <div id="currentTime"></div>
 
   <script>
+    function clearOnEnter(event) {
+      if (event.key === 'Enter') {
+        document.getElementById('idInput').value = ''; // Clear the input box
+      }
+    }
+
     function updateCurrentTime() {
       const now = new Date();
       const dayName = now.toLocaleDateString(undefined, { weekday: 'long' });
