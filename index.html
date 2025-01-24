@@ -23,6 +23,10 @@
       padding: 5px 10px;
       border-radius: 8px;
     }
+    #entryList {
+      font-size: 30px;
+      margin-top: 20px;
+    }
 
     @media (max-width: 768px) {
       #currentTime {
@@ -44,15 +48,44 @@
 <body>
   <center><h1>Arts & Wellness Scan Out Tracker</h1></center>
   <b><label>Enter Your ID:</label></b>
-  <input type="text" id="idInput" size="20" onkeydown="clearOnEnter(event)">
+  <input type="text" id="idInput" size="20" onkeydown="submitOnEnter(event)">
+  
+  <div id="entryList"><b>Last Entries:</b><br></div>
   
   <div id="currentTime"></div>
 
   <script>
-    function clearOnEnter(event) {
+    const entries = [];
+    let debounceTimeout;
+
+    function submitOnEnter(event) {
       if (event.key === 'Enter') {
-        document.getElementById('idInput').value = ''; // Clear the input box
+        const idInputValue = document.getElementById('idInput').value;
+        const timestamp = new Date().toLocaleString();
+
+        if (idInputValue) {
+          // Mask all but last 4 characters of the ID
+          const maskedID = idInputValue.slice(0, -4).replace(/./g, 'X') + idInputValue.slice(-4);
+
+          // Add the entry to the list
+          entries.unshift({ id: maskedID, time: timestamp });
+          if (entries.length > 5) {
+            entries.pop();
+          }
+
+          updateEntryList();
+          document.getElementById('idInput').value = ''; // Clear the input box
+        }
       }
+    }
+
+    function updateEntryList() {
+      const entryList = document.getElementById('entryList');
+      let entriesHTML = '<b>Last Entries:</b><br>';
+      entriesHTML += entries
+        .map(entry => `${entry.id} - ${entry.time}`)
+        .join('<br>');
+      entryList.innerHTML = entriesHTML;
     }
 
     function updateCurrentTime() {
